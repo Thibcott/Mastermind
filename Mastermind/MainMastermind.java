@@ -2,12 +2,15 @@ package Mastermind;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,16 +60,26 @@ public class MainMastermind extends JFrame {
 			//pas fini a finir 
 		String[] asOp = {"yes","no" };
 		int n = JOptionPane.showOptionDialog(	MMm, 
-												"Etez vous vraiment sur de vouloir quittez ?",
-												"Bienvenue ",
+												"Bienvenue dans MasterMind. Connaissez vous les regles du jeu ?",
+												"Bienvenue",
 												JOptionPane.YES_NO_OPTION,
-												JOptionPane.QUESTION_MESSAGE,
+												JOptionPane.PLAIN_MESSAGE	,
 												null,
 												asOp,
 												asOp[0]);
-		if(n == 0) {
-		}else {
-			System.out.println("Ooops, bon je continue");
+		if (n == 1) {
+			if (Desktop.isDesktopSupported()) {
+				File file = new File("");
+				String currentPath = file.getAbsolutePath();
+			    try {
+			        File myFile = new File(currentPath+"\\src\\Mastermind\\ReglesDuJeu.pdf");
+			        Desktop.getDesktop().open(myFile);
+			    } catch (IOException ex) {
+			        // no application registered for PDFs
+			    }
+			}
+		} else {
+			System.out.println("D'acc alors je continue");
 		}
 		
 	}
@@ -275,7 +288,7 @@ public class MainMastermind extends JFrame {
 			c=0;
 			cp=0;
 			// TODO Auto-generated method stub
-			if(gc.currentRound >= 1) {
+			if(gc.currentRound >= 12) {
 				
 				String[] asOp = {"yes","no" };
 				int n = JOptionPane.showOptionDialog(	rootPane, 
