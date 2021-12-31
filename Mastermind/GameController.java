@@ -109,7 +109,7 @@ public class GameController {
 	}
 	
 	public void reset() {
-		System.out.println("appel de la function 'reset'");
+		//System.out.println("appel de la function 'reset'");
 		currentRound = 0;
 		for (Row row : alRow) {
 			row.reset();

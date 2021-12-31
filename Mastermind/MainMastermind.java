@@ -34,7 +34,7 @@ import javax.swing.event.AncestorListener;
 public class MainMastermind extends JFrame {
 
 	private JPanel pnlControl, pnlGame;
-	private JButton btnRestart, btnSolution, btnCheck;
+	private JButton btnRestart, btnSolution, btnCheck, btnHelp;
 	private JLabel lblWriter, lblStatus;
 	private JRadioButton rbnBleu, rbnOrange, rbnVert, rbnRed, rbnGris, rbnViolet;
 	private Color[] solution;
@@ -44,7 +44,10 @@ public class MainMastermind extends JFrame {
 	int c 	= 0;
 	int cp 	= 0;
 	int t = 0;
+	int oldT = 1;
 	String sRes   =""; 
+	static String[] asOp = {"yes","no" };
+
 
 	//temp
 	Color[] aSol = null;
@@ -57,8 +60,6 @@ public class MainMastermind extends JFrame {
 		MMm.setVisible(true);
 		System.out.println("-----------App-Start-----------");
 		//affichage de la dialog de bienvenue
-			//pas fini a finir 
-		String[] asOp = {"yes","no" };
 		int n = JOptionPane.showOptionDialog(	MMm, 
 												"Bienvenue dans MasterMind. Connaissez vous les regles du jeu ?",
 												"Bienvenue",
@@ -68,16 +69,7 @@ public class MainMastermind extends JFrame {
 												asOp,
 												asOp[0]);
 		if (n == 1) {
-			if (Desktop.isDesktopSupported()) {
-				File file = new File("");
-				String currentPath = file.getAbsolutePath();
-			    try {
-			        File myFile = new File(currentPath+"\\src\\Mastermind\\ReglesDuJeu.pdf");
-			        Desktop.getDesktop().open(myFile);
-			    } catch (IOException ex) {
-			        // no application registered for PDFs
-			    }
-			}
+			getHelp();
 		} else {
 			System.out.println("D'acc alors je continue");
 		}
@@ -89,6 +81,19 @@ public class MainMastermind extends JFrame {
 		this.gc = GameController.getInstance();
 		aSol = gc.genrateRandomCombination();
 		initGUI();
+	}
+	
+	public static void getHelp() {
+		if (Desktop.isDesktopSupported()) {
+			File file = new File("");
+			String currentPath = file.getAbsolutePath();
+		    try {
+		        File myFile = new File(currentPath+"\\src\\Mastermind\\ReglesDuJeu.pdf");
+		        Desktop.getDesktop().open(myFile);
+		    } catch (IOException ex) {
+		        // no application registered for PDFs
+		    }
+		}
 	}
 	
 	public void printSolution() {
@@ -121,6 +126,7 @@ public class MainMastermind extends JFrame {
 		rbnGris = new JRadioButton("Gris");
 		rbnViolet = new JRadioButton("Violet");
 
+		btnHelp = new JButton("Aide");
 		lblWriter = new JLabel("ThibCott");
 
 		ButtonGroup bGroup = new ButtonGroup();
@@ -186,6 +192,11 @@ public class MainMastermind extends JFrame {
 		rbnBleu.setEnabled(true);
 
 		pnlControl.add(rbnViolet);
+		
+		btnHelp.setMaximumSize(new Dimension(120, 20));
+		pnlControl.add(btnHelp);
+		btnHelp.addActionListener(new Help());
+		
 		pnlControl.add(lblWriter);
 		pnlControl.setBackground(Color.decode("#e6f2ff"));
 		
@@ -257,12 +268,9 @@ public class MainMastermind extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			System.out.println("Restart");
-		
-
-			
-			String[] asOp = {"yes","no" };
+					
 			int n = JOptionPane.showOptionDialog(	rootPane, 
-													"Etez vous vraiment sur de vouloir quittez ?",
+													"Etez vous vraiment sur de vouloir recommencez ?",
 													"Recommancer ?",
 													JOptionPane.YES_NO_OPTION,
 													JOptionPane.QUESTION_MESSAGE,
@@ -280,6 +288,15 @@ public class MainMastermind extends JFrame {
 		}
 		
 	}
+	class Help implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			getHelp();
+		}
+		
+	}
 	
 	class Check implements ActionListener {
 
@@ -290,7 +307,7 @@ public class MainMastermind extends JFrame {
 			// TODO Auto-generated method stub
 			if(gc.currentRound >= 12) {
 				
-				String[] asOp = {"yes","no" };
+				//String[] asOp = {"yes","no" };
 				int n = JOptionPane.showOptionDialog(	rootPane, 
 														"Voulez vous voir la solution  ?",
 														"Fin de partie",
@@ -317,8 +334,10 @@ public class MainMastermind extends JFrame {
 				System.out.println("check");
 				System.out.println("Tour :" + gc.currentRound);
 				int ta=gc.currentRound+1;
-				sRes +="<p>Tour : "+ta+"</p>";
-	
+				System.out.println("ta : " + ta);
+				System.out.println("oldT : " + oldT);
+				
+				
 				//verifie si tout a ete saisie
 				boolean isBlack = false;
 				for (Color color : gc.alRow.get(gc.currentRound).getColor() ) {
@@ -341,6 +360,8 @@ public class MainMastermind extends JFrame {
 							cp++;
 						}
 					}
+					sRes +="<p>Tour : "+ta+"</p>";
+
 					sRes+="<p> Blanc(s) : " + c + "<br/> Noir(s) : " + cp + "</p>";
 				
 					//incremnt pour passer au tour suivant 
@@ -355,6 +376,7 @@ public class MainMastermind extends JFrame {
 			
 				
 		} 
+		
 		
 	}
 }
