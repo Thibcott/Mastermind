@@ -46,7 +46,7 @@ public class MainMastermind extends JFrame {
 	int t = 0;
 	int oldT = 1;
 	String sRes   =""; 
-	static String[] asOp = {"yes","no" };
+	static String[] asOp = {"oui","non" };
 
 
 	//temp
@@ -305,9 +305,8 @@ public class MainMastermind extends JFrame {
 			c=0;
 			cp=0;
 			// TODO Auto-generated method stub
-			if(gc.currentRound >= 12) {
+			if(gc.currentRound >= 11) {
 				
-				//String[] asOp = {"yes","no" };
 				int n = JOptionPane.showOptionDialog(	rootPane, 
 														"Voulez vous voir la solution  ?",
 														"Fin de partie",
@@ -328,15 +327,16 @@ public class MainMastermind extends JFrame {
 				
 				//faire qqch pour arreter le jeu 
 				gc.reset();
+				sRes = "";
+				lblStatus.setText("<html>"+sRes+"<html/>");
 
-			}else {
+			} else {
 				
 				System.out.println("check");
 				System.out.println("Tour :" + gc.currentRound);
 				int ta=gc.currentRound+1;
 				System.out.println("ta : " + ta);
 				System.out.println("oldT : " + oldT);
-				
 				
 				//verifie si tout a ete saisie
 				boolean isBlack = false;
@@ -350,7 +350,12 @@ public class MainMastermind extends JFrame {
 				if(isBlack==true) {
 
 				} else {
-				
+					for (Color color : aSol) {
+						System.out.println(color);
+					}
+					for (int color : gc.checkSol(aSol, gc.alRow.get(gc.currentRound).getColor() )) {
+						System.out.println("r : " + color);
+					}
 					//check de la solution
 					for (int i : gc.checkSol(aSol, gc.alRow.get(gc.currentRound).getColor() )) {
 						if(i == 1) {
@@ -360,7 +365,14 @@ public class MainMastermind extends JFrame {
 							cp++;
 						}
 					}
-					sRes +="<p>Tour : "+ta+"</p>";
+					if(cp>=3) {
+						JOptionPane.showMessageDialog(
+								null,
+								"Bravo, vous avez trouver la combinaison de couleur !");
+								gc.reset();
+
+					}
+					sRes +="<br><p>Tour : "+ta+"</p>";
 
 					sRes+="<p> Blanc(s) : " + c + "<br/> Noir(s) : " + cp + "</p>";
 				
