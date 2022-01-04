@@ -1,35 +1,30 @@
+/* 	Mastermind projet 
+ * 	MI-IN DEV3 EPTM Sion
+ *	Thibaut Cotture Hopital du Valais 
+ *	M120
+ * 
+ * 	MainMastermind
+ */
 package Mastermind;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
-import javax.swing.event.AncestorListener;
-
 
 public class MainMastermind extends JFrame {
 
@@ -37,8 +32,6 @@ public class MainMastermind extends JFrame {
 	private JButton btnRestart, btnSolution, btnCheck, btnHelp;
 	private JLabel lblWriter, lblStatus;
 	private JRadioButton rbnBleu, rbnOrange, rbnVert, rbnRed, rbnGris, rbnViolet;
-	private Color[] solution;
-	private Color[][] propositions;
 	private Row myRow , mySol;
 	private GameController gc;
 	int c 	= 0;
@@ -61,7 +54,7 @@ public class MainMastermind extends JFrame {
 		System.out.println("-----------App-Start-----------");
 		//affichage de la dialog de bienvenue
 		int n = JOptionPane.showOptionDialog(	MMm, 
-												"Bienvenue dans MasterMind. Connaissez vous les regles du jeu ?",
+												"Bienvenue dans MasterMind. Connaissez-vous les régles du jeu ?",
 												"Bienvenue",
 												JOptionPane.YES_NO_OPTION,
 												JOptionPane.PLAIN_MESSAGE	,
@@ -83,6 +76,7 @@ public class MainMastermind extends JFrame {
 		initGUI();
 	}
 	
+	//function pour afficher l aide il ouvre le pdf avec les regles 
 	public static void getHelp() {
 		if (Desktop.isDesktopSupported()) {
 			File file = new File("");
@@ -96,6 +90,7 @@ public class MainMastermind extends JFrame {
 		}
 	}
 	
+	//function qui affiche la solution 
 	public void printSolution() {
 		mySol = new Row(aSol);
 		// dialog
@@ -111,8 +106,9 @@ public class MainMastermind extends JFrame {
 		setSize(450, 1000);
 		setBackground(Color.white);
 		setResizable(false);
-
-		// pnl de commande a gauche
+		
+		//instanciation des composant
+		//pnl de commande a gauche
 		pnlControl = new JPanel();
 		btnRestart = new JButton("Recommencer");
 		btnSolution = new JButton("Solution");
@@ -128,37 +124,46 @@ public class MainMastermind extends JFrame {
 
 		btnHelp = new JButton("Aide");
 		lblWriter = new JLabel("ThibCott");
-
+		
+		//instanciation du groupe de radioButton
 		ButtonGroup bGroup = new ButtonGroup();
 
+		//ajoute des radio btn dans le groupe
 		bGroup.add(rbnBleu);
 		bGroup.add(rbnOrange);
 		bGroup.add(rbnVert);
 		bGroup.add(rbnRed);
 		bGroup.add(rbnGris);
 		bGroup.add(rbnViolet);
-
+		
+		
 		pnlControl.setBackground(Color.WHITE);
+		//ajoute du pnl de Control dans la fenetre
 		getContentPane().add(pnlControl, BorderLayout.WEST);
 		pnlControl.setLayout(new BoxLayout(pnlControl, BoxLayout.Y_AXIS));
 
-		
+		//ajoute du btn restart
 		btnRestart.setMaximumSize(new Dimension(120, 20));
 		pnlControl.add(btnRestart);
 		btnRestart.addActionListener(new Restart());
 
+		//ajoute du btn solution
 		btnSolution.setMaximumSize(new Dimension(120, 20));
 		pnlControl.add(btnSolution);
 		btnSolution.addActionListener(new Solution());
 		
-		
+		//ajoute du lbl du status
 		pnlControl.add(lblStatus);
+		
+		//ajoute d un espace
 		pnlControl.add(Box.createGlue());
 
+		//ajoute du btn check
 		btnCheck.setMaximumSize(new Dimension(120, 20));
 		pnlControl.add(btnCheck);
 		btnCheck.addActionListener(new Check());
 
+		//ajoute des radio btn de couleurs 
 		rbnBleu.setMaximumSize(new Dimension(120, 20));
 		rbnBleu.setBackground(Color.blue);
 		rbnBleu.setForeground(Color.white);
@@ -188,18 +193,18 @@ public class MainMastermind extends JFrame {
 		rbnViolet.setMaximumSize(new Dimension(120, 20));
 		rbnViolet.setBackground(Color.magenta);
 		rbnViolet.addActionListener(new ChangeColor());
-		
-		rbnBleu.setEnabled(true);
-
 		pnlControl.add(rbnViolet);
 		
+		//ajoute du btn help 
 		btnHelp.setMaximumSize(new Dimension(120, 20));
 		pnlControl.add(btnHelp);
 		btnHelp.addActionListener(new Help());
 		
+		//label pour l auteur de l app 
 		pnlControl.add(lblWriter);
 		pnlControl.setBackground(Color.decode("#e6f2ff"));
 		
+		//ajoute a la frame du pnl game c est la ou toutes les lignes sont afficher 
 		pnlGame = new JPanel();
 		pnlGame.setBackground(Color.white);
 
@@ -215,7 +220,7 @@ public class MainMastermind extends JFrame {
 		}
 		gc.setActiveRound();
 			
-		getContentPane().add(pnlGame);	
+		getContentPane().add(pnlGame);
 	}
 
 
@@ -270,7 +275,7 @@ public class MainMastermind extends JFrame {
 			System.out.println("Restart");
 					
 			int n = JOptionPane.showOptionDialog(	rootPane, 
-													"Etez vous vraiment sur de vouloir recommencez ?",
+													"Etes-vous vraiment sûr de vouloir recommencez ?",
 													"Recommancer ?",
 													JOptionPane.YES_NO_OPTION,
 													JOptionPane.QUESTION_MESSAGE,
@@ -283,8 +288,7 @@ public class MainMastermind extends JFrame {
 			}else {
 				System.out.println("Ooops, bon je continue");
 			}
-			
-
+		
 		}
 		
 	}
@@ -308,7 +312,7 @@ public class MainMastermind extends JFrame {
 			if(gc.currentRound >= 11) {
 				
 				int n = JOptionPane.showOptionDialog(	rootPane, 
-														"Voulez vous voir la solution  ?",
+														"Voulez-vous voir la solution  ?",
 														"Fin de partie",
 														JOptionPane.YES_NO_OPTION,
 														JOptionPane.QUESTION_MESSAGE,
@@ -332,30 +336,20 @@ public class MainMastermind extends JFrame {
 
 			} else {
 				
-				System.out.println("check");
-				System.out.println("Tour :" + gc.currentRound);
-				int ta=gc.currentRound+1;
-				System.out.println("ta : " + ta);
-				System.out.println("oldT : " + oldT);
 				
+				int ta=gc.currentRound+1;
+			
 				//verifie si tout a ete saisie
 				boolean isBlack = false;
 				for (Color color : gc.alRow.get(gc.currentRound).getColor() ) {
 					System.out.println("c e :" + color);
 					if(color == Color.black) {
 						isBlack = true;
-					}
-					
+					}					
 				}
 				if(isBlack==true) {
-
 				} else {
-					for (Color color : aSol) {
-						System.out.println(color);
-					}
-					for (int color : gc.checkSol(aSol, gc.alRow.get(gc.currentRound).getColor() )) {
-						System.out.println("r : " + color);
-					}
+
 					//check de la solution
 					for (int i : gc.checkSol(aSol, gc.alRow.get(gc.currentRound).getColor() )) {
 						if(i == 1) {
@@ -368,7 +362,7 @@ public class MainMastermind extends JFrame {
 					if(cp>=3) {
 						JOptionPane.showMessageDialog(
 								null,
-								"Bravo, vous avez trouver la combinaison de couleur !");
+								"Bravo, vous avez trouvé la bonne combinaison de couleur !");
 								gc.reset();
 
 					}
@@ -379,16 +373,10 @@ public class MainMastermind extends JFrame {
 					//incremnt pour passer au tour suivant 
 					gc.nextRound();
 				}
-				System.out.println("res: "+sRes);
+				//System.out.println("res: "+sRes);
 				//affichage du status du resultat de la combinaison 
 				lblStatus.setText("<html>"+sRes+"<html/>");
-			
-			}
-			
-			
-				
+			}	
 		} 
-		
-		
 	}
 }

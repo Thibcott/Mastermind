@@ -1,18 +1,16 @@
+/* 	Mastermind projet 
+ * 	MI-IN DEV3 EPTM Sion
+ *	Thibaut Cotture Hopital du Valais 
+ *	M120
+ * 
+ * 	GameController
+ */
 package Mastermind;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
-import EX2NA.EXAMEN02.pnlMouseListener;
 
 public class GameController {
 
@@ -22,6 +20,7 @@ public class GameController {
 	
 	private static GameController instance = null; 
 	
+	//singleton
 	public static GameController getInstance() {
 		if(instance==null) {
 			instance = new GameController();
@@ -29,7 +28,11 @@ public class GameController {
 		return instance;
 	}
 	
-	
+	/** 
+	 * methode genrateRandomCombination
+	 * elle permet de generer aleatoirement une combinaison 
+	 * @author thibcott
+	 * */ 
 	public  Color[] genrateRandomCombination() {
 		Color[] aColor = {	Color.blue,
 							Color.orange,
@@ -40,7 +43,6 @@ public class GameController {
 		List<Color> aCFinal = new ArrayList<>();
 
 		Random rand = new Random();
-	
 		for (int i = 0; i < 4; i++) {
 			// Obtain a number between [0 - 5].
 			int r = 0;
@@ -53,10 +55,17 @@ public class GameController {
 		return aCFinal.toArray(new Color[0]);
 	}
 	
-	//Check si la solution et la meme que la proposition
+	//Check si la solution est la meme que la proposition
 	//si  0 : pas correct
 	//si  1 : bonne couleur
 	//si  2 : bonne couleur a la bonne position 
+	/**
+	 * Check si la solution est la meme que la proposition
+		si  0 : pas correct
+		si  1 : bonne couleur
+		si  2 : bonne couleur a la bonne position
+		@author thibcott 
+	 * */
 	public int[] checkSol(Color[] sol,Color[] Proposition) {
 		
 		int[] res = new int[4];
@@ -88,7 +97,7 @@ public class GameController {
 		for (int i = 0; i < res.length; i++) {
 			if(res[i]==1) {
 				if(Proposition[i]==sol[i]) {
-					System.out.println("pareil");
+					//System.out.println("pareil");
 					res[i]=2;
 				}
 			}
@@ -98,6 +107,11 @@ public class GameController {
 		return res;	
 	}
 
+	/**
+	 * methode qui permet pour set une ligne en mode active
+	 * 
+	 * @author thibcott
+	 * */
 	public void setActiveRound() {
 		for(int i =0;i < alRow.size();i++) {
 			if(currentRound==i) {
@@ -108,6 +122,11 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * Methode qui permet de recommanecer la partie du jeu 
+	 * 
+	 * @author thibcott
+	 * */
 	public void reset() {
 		currentRound = 0;
 		for (Row row : alRow) {
@@ -116,6 +135,11 @@ public class GameController {
 		setActiveRound();
 	}
 	
+	/**
+	 * Methode qui permet de passer au tour suivant 
+	 * 
+	 * @author thibcot
+	 **/
 	public void nextRound() {
 		currentRound++;
 		setActiveRound();

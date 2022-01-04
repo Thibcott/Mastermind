@@ -1,11 +1,16 @@
+/* 	Mastermind projet 
+ * 	MI-IN DEV3 EPTM Sion
+ *	Thibaut Cotture Hopital du Valais 
+ *	M120
+ * 
+ * 	Row
+ */
 package Mastermind;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import javax.swing.JPanel;
 
@@ -70,7 +75,7 @@ public class Row extends JPanel implements MouseListener {
 			int roundId = e.getX() / (this.getWidth() / 4);
 			this.colors[roundId] = GameController.getInstance().currentColor;
 			for (Color color : colors) {
-				System.out.println(color);
+				//System.out.println(color);
 				if(color==Color.black) {
 					ihaveBlack++;
 					//System.out.println("y a des noirs 1");
